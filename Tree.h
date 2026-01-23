@@ -12,6 +12,7 @@ typedef struct TreeNode
     TreeEntry Entry;
     struct TreeNode *left;
     struct TreeNode *right;
+    int height;
 } TreeNode;
 
 typedef struct Tree
@@ -37,8 +38,7 @@ void insertTreeIter(Tree *ptree,TreeEntry *pe);
 int insertTreeRec(TreeNode **pt,TreeEntry *pe);
 void clearTreeRec2(Tree *treeNode);
 void cleartreeRec(TreeNode *treeNode);
-
-
+void AVL_Insert(Tree *ptree,TreeEntry *pe);
 int deleteItemIter(TreeNode** ptree,TreeEntry *pe,KeyType key);
 
 

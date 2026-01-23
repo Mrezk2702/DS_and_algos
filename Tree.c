@@ -438,3 +438,134 @@ int deleteItemIter(TreeNode** ptree,TreeEntry *pe,KeyType key)
 
     return found;
 }
+
+int max(int a,int b)
+{
+    return a>b?a:b;
+}
+/*AVL TREE Functions */
+int getbalance(TreeNode *node)
+{
+    if (node == NULL)
+        return 0;
+    return treeDepthRec(node->left) - treeDepthRec(node->right);
+}
+int AVL_InsertAux(TreeNode **ptree,TreeEntry *pe)
+{
+    int returnval=1;
+    //Perform normal BST insertion
+    if(*ptree==NULL)
+    {
+        *ptree=malloc(sizeof(TreeNode));
+        if(*ptree==NULL)
+            return 0; //memory allocation failed
+        (*ptree)->Entry=*pe;
+        (*ptree)->left=NULL;
+        (*ptree)->right=NULL;
+        (*ptree)->height=1; //new node is initially added at leaf
+        return 1;
+    }
+    if(pe->key<(*ptree)->Entry.key)
+    {
+       returnval= AVL_InsertAux(&((*ptree)->left),pe);
+    }
+    else if(pe->key>(*ptree)->Entry.key)
+    {
+       returnval= AVL_InsertAux(&((*ptree)->right),pe);
+    }
+    else
+    {
+        return -1; //duplicate keys are not allowed
+    }
+    if(returnval==1)
+    {
+    // Update heights and balance the tree
+    (*ptree)->height=1+max(treeDepthRec((*ptree)->left),treeDepthRec((*ptree)->right));
+
+    int balanceFactor=getbalance(*ptree);
+    // Left Left Case
+    if(balanceFactor>1&& pe->key<(*ptree)->left->Entry.key)
+    {
+        // Right rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->left;
+        TreeNode *T2=x->right;
+
+        // Perform rotation
+        x->right=y;
+        y->left=T2;
+
+        // Update heights
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+
+        // Update root
+        *ptree=x;
+    }
+    else if(balanceFactor<-1&&pe->key>(*ptree)->right->Entry.key)
+    {
+        //left rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->right;
+        TreeNode *T2=x->left;
+        //perform rotation
+        x->left=y;
+        y->right=T2;
+        //update heights    
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        //update root
+        *ptree=x;
+    }
+    else if(balanceFactor>1&&pe->key>(*ptree)->left->Entry.key)
+    {
+        //left-right rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->left;
+        TreeNode *z=x->right;
+        TreeNode *T2=z->left;
+        TreeNode *T3=z->right;
+        //perform rotations
+        z->left=x;
+        z->right=y;
+        x->right=T2;
+        y->left=T3;
+        //update heights
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
+        //update root
+        *ptree=z;
+    }
+    else if(balanceFactor<-1&&pe->key<(*ptree)->right->Entry.key)
+    {
+        //right-left rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->right;
+        TreeNode *z=x->left;
+        TreeNode *T2=z->left;
+        TreeNode *T3=z->right;
+        //perform rotations
+        z->right=x;
+        z->left=y;
+        x->left=T3;
+        y->right=T2;
+        //update heights
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
+        //update root
+        *ptree=z;
+    }
+    return 1;
+}
+
+
+}
+void AVL_Insert(Tree *ptree,TreeEntry *pe)
+{
+    // AVL insertion logic would go here
+    // This is a placeholder function
+    AVL_InsertAux(&(ptree->root),pe);
+
+}
