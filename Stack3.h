@@ -17,14 +17,14 @@ typedef struct {
 } Stack;
 
 /* API */
-__declspec(dllexport) void CreateStack(Stack* PS);
-__declspec(dllexport) int  StackEmpty(Stack* PS);
-__declspec(dllexport) void Push(Stack* PS, StackEntry E);
-__declspec(dllexport) int  Pop(Stack* PS, StackEntry* PE);
-__declspec(dllexport) void StackTop(Stack* PS, StackEntry* PE);
-__declspec(dllexport) int  StackSize(Stack* PS);
-__declspec(dllexport) void ClearStack(Stack* PS);
-__declspec(dllexport) void TraverseStack(Stack* PS, void (*pf)(StackEntry));
+ void CreateStack(Stack* PS);
+ int  StackEmpty(Stack* PS);
+ void Push(Stack* PS, StackEntry E);
+ int  Pop(Stack* PS, StackEntry* PE);
+ void StackTop(Stack* PS, StackEntry* PE);
+ int  StackSize(Stack* PS);
+ void ClearStack(Stack* PS);
+ void TraverseStack(Stack* PS, void (*pf)(StackEntry));
 
 #ifdef __cplusplus
 }

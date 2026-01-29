@@ -1,17 +1,17 @@
 #include "Stack3.h"
 #include <stdlib.h>
 
-__declspec(dllexport) void CreateStack(Stack* PS)
+ void CreateStack(Stack* PS)
 {
     PS->Top = NULL;
 }
 
-__declspec(dllexport) int StackEmpty(Stack* PS)
+ int StackEmpty(Stack* PS)
 {
     return PS->Top == NULL;
 }
 
-__declspec(dllexport) void Push(Stack* PS, StackEntry E)
+ void Push(Stack* PS, StackEntry E)
 {
     StackNode* PN = (StackNode*)malloc(sizeof(StackNode));
     if (!PN) return;   // allocation failed
@@ -21,7 +21,7 @@ __declspec(dllexport) void Push(Stack* PS, StackEntry E)
     PS->Top   = PN;
 }
 
-__declspec(dllexport) int Pop(Stack* PS, StackEntry* PE)
+ int Pop(Stack* PS, StackEntry* PE)
 {
     if (StackEmpty(PS))
         return 0;   // failure
@@ -34,13 +34,13 @@ __declspec(dllexport) int Pop(Stack* PS, StackEntry* PE)
     return 1;       // success
 }
 
-__declspec(dllexport) void StackTop(Stack* PS, StackEntry* PE)
+ void StackTop(Stack* PS, StackEntry* PE)
 {
     if (!StackEmpty(PS))
         *PE = PS->Top->entry;
 }
 
-__declspec(dllexport) int StackSize(Stack* PS)
+ int StackSize(Stack* PS)
 {
     int size = 0;
     StackNode* PN = PS->Top;
@@ -52,7 +52,7 @@ __declspec(dllexport) int StackSize(Stack* PS)
     return size;
 }
 
-__declspec(dllexport) void ClearStack(Stack* PS)
+ void ClearStack(Stack* PS)
 {
     StackEntry dummy;
     while (!StackEmpty(PS)) {
@@ -60,7 +60,7 @@ __declspec(dllexport) void ClearStack(Stack* PS)
     }
 }
 
-__declspec(dllexport) void TraverseStack(Stack* PS, void (*pf)(StackEntry))
+ void TraverseStack(Stack* PS, void (*pf)(StackEntry))
 {
     StackNode* PN = PS->Top;
     while (PN) {
