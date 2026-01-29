@@ -450,6 +450,81 @@ int getbalance(TreeNode *node)
         return 0;
     return treeDepthRec(node->left) - treeDepthRec(node->right);
 }
+
+void AVL_Left_Rotation(TreeNode ** ptree)
+{
+    //left rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->right;
+        TreeNode *T2=x->left;
+        //perform rotation
+        x->left=y;
+        y->right=T2;
+        //update heights    
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        //update root
+        *ptree=x;
+}
+
+void AVL_Right_Rotation(TreeNode ** ptree)
+{
+     // Right rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->left;
+        TreeNode *T2=x->right;
+
+        // Perform rotation
+        x->right=y;
+        y->left=T2;
+
+        // Update heights
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+
+        // Update root
+        *ptree=x;
+}
+void AVL_LeftRight_Rotation(TreeNode ** ptree)
+{
+            //left-right rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->left;
+        TreeNode *z=x->right;
+        TreeNode *T2=z->left;
+        TreeNode *T3=z->right;
+        //perform rotations
+        z->left=x;
+        z->right=y;
+        x->right=T2;
+        y->left=T3;
+        //update heights
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
+        //update root
+        *ptree=z;
+}
+void AVL_RightLeft_Rotation(TreeNode **ptree)
+{
+            //right-left rotation
+        TreeNode *y=*ptree;
+        TreeNode *x=y->right;
+        TreeNode *z=x->left;
+        TreeNode *T2=z->left;
+        TreeNode *T3=z->right;
+        //perform rotations
+        z->right=x;
+        z->left=y;
+        x->left=T3;
+        y->right=T2;
+        //update heights
+        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
+        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
+        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
+        //update root
+        *ptree=z;
+}
 int AVL_InsertAux(TreeNode **ptree,TreeEntry *pe)
 {
     int returnval=1;
@@ -486,76 +561,19 @@ int AVL_InsertAux(TreeNode **ptree,TreeEntry *pe)
     // Left Left Case
     if(balanceFactor>1&& pe->key<(*ptree)->left->Entry.key)
     {
-        // Right rotation
-        TreeNode *y=*ptree;
-        TreeNode *x=y->left;
-        TreeNode *T2=x->right;
-
-        // Perform rotation
-        x->right=y;
-        y->left=T2;
-
-        // Update heights
-        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
-        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
-
-        // Update root
-        *ptree=x;
+        AVL_Right_Rotation(ptree);
     }
     else if(balanceFactor<-1&&pe->key>(*ptree)->right->Entry.key)
     {
-        //left rotation
-        TreeNode *y=*ptree;
-        TreeNode *x=y->right;
-        TreeNode *T2=x->left;
-        //perform rotation
-        x->left=y;
-        y->right=T2;
-        //update heights    
-        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
-        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
-        //update root
-        *ptree=x;
+        AVL_Left_Rotation(ptree);
     }
     else if(balanceFactor>1&&pe->key>(*ptree)->left->Entry.key)
     {
-        //left-right rotation
-        TreeNode *y=*ptree;
-        TreeNode *x=y->left;
-        TreeNode *z=x->right;
-        TreeNode *T2=z->left;
-        TreeNode *T3=z->right;
-        //perform rotations
-        z->left=x;
-        z->right=y;
-        x->right=T2;
-        y->left=T3;
-        //update heights
-        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
-        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
-        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
-        //update root
-        *ptree=z;
+        AVL_LeftRight_Rotation(ptree);
     }
     else if(balanceFactor<-1&&pe->key<(*ptree)->right->Entry.key)
     {
-        //right-left rotation
-        TreeNode *y=*ptree;
-        TreeNode *x=y->right;
-        TreeNode *z=x->left;
-        TreeNode *T2=z->left;
-        TreeNode *T3=z->right;
-        //perform rotations
-        z->right=x;
-        z->left=y;
-        x->left=T3;
-        y->right=T2;
-        //update heights
-        x->height=1+max(treeDepthRec(x->left),treeDepthRec(x->right));
-        y->height=1+max(treeDepthRec(y->left),treeDepthRec(y->right));
-        z->height=1+max(treeDepthRec(z->left),treeDepthRec(z->right));
-        //update root
-        *ptree=z;
+       AVL_RightLeft_Rotation(ptree);
     }
     return 1;
 }
