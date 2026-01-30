@@ -21,7 +21,8 @@ void main(void)
         AVL_Insert(&myTree,&e1);
                 e1.data=50; e1.key=50;
         AVL_Insert(&myTree,&e1);
-               inorder(&myTree,&display);
+       AVL_Delete(&myTree,10);
+               preorder(&myTree,&display);
       printf("\n root is%d",(myTree.root->right->Entry.data));
 
       

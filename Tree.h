@@ -42,6 +42,7 @@ void AVL_Insert(Tree *ptree,TreeEntry *pe);
 int deleteItemIter(TreeNode** ptree,TreeEntry *pe,KeyType key);
 
 
+void AVL_Delete(TreeNode ** ptree,KeyType key);
 
 
 #endif

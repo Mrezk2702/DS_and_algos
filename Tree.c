@@ -587,3 +587,100 @@ void AVL_Insert(Tree *ptree,TreeEntry *pe)
     AVL_InsertAux(&(ptree->root),pe);
 
 }
+
+/*Gets the maximum value from a 
+given node in binary tree */
+struct Node * maxValueNode(TreeNode * ptree)
+{
+    if(ptree==NULL)
+    {
+        return ptree;
+    }
+    TreeNode *Curr=ptree;
+    while(Curr->right)
+    {
+        Curr=Curr->right;
+    }
+    return Curr;
+
+}
+/* Helper: Get height safely */
+int getHeight(TreeNode *node)
+{
+    return node ? node->height : 0;
+}
+
+void AVL_Delete(TreeNode ** ptree,KeyType key)
+{
+    if (*ptree==NULL)
+    {
+        return ;
+    }
+
+    if(key<(*ptree)->Entry.key)
+    {
+        AVL_Delete(&((*ptree)->left),key);
+
+    }
+    else if(key>(*ptree)->Entry.key)
+    {
+        AVL_Delete(&((*ptree)->right),key);
+    }
+    else
+    {
+        if ((*ptree)->left == NULL && (*ptree)->right == NULL)
+        {
+            // Leaf node
+            free(*ptree);
+            *ptree = NULL;
+        }
+        else if ((*ptree)->left == NULL)
+        {
+            // Only right child
+            TreeNode *temp = *ptree;
+            *ptree = (*ptree)->right;
+            free(temp);
+        }
+        else if ((*ptree)->right == NULL)
+        {
+            // Only left child
+            TreeNode *temp = *ptree;
+            *ptree = (*ptree)->left;
+            free(temp);
+        }
+        else
+        {
+            /*Inorder predecessor (biggest in left subtree) */
+            TreeNode * temp=maxValueNode((*ptree)->left);
+            (*ptree)->Entry=temp->Entry;
+            AVL_Delete(&((*ptree)->left),temp->Entry.key);
+            
+        }
+
+
+    }
+    //check balance and rest of AVL algorithm
+    if(*ptree==NULL)
+    return;
+     (*ptree)->height=1+max(getHeight((*ptree)->left),getHeight((*ptree)->right));
+    int balanceFactor=getbalance(*ptree);
+    if(balanceFactor>1&& getbalance((*ptree)->left)>=0)
+    {
+        AVL_Right_Rotation(ptree);
+    }
+    else if(balanceFactor<-1&&getbalance((*ptree)->right) <= 0)
+    {
+        AVL_Left_Rotation(ptree);
+    }
+    else if(balanceFactor>1&&getbalance((*ptree)->left)<0)
+    {
+        AVL_LeftRight_Rotation(ptree);
+    }
+    else if(balanceFactor<-1&&getbalance((*ptree)->right) > 0)
+    {
+       AVL_RightLeft_Rotation(ptree);
+    }
+
+
+    
+}
