@@ -67,6 +67,7 @@ public:
         }
     }
     void TraverseDFS(void);
+    void createGraphFromList(vector<pair<T_GRAPH, int>> verticesList, vector<pair<int, int>> edgesList);
 
 private:
     int numVertices;
@@ -93,7 +94,7 @@ void GRAPH<T_GRAPH>::TraverseDFS_AUX(node<T_GRAPH> *current, unordered_set<node<
 }
 
 template <typename T_GRAPH>
-void GRAPH<T_GRAPH>::TraverseDFS()
+void GRAPH<T_GRAPH>::TraverseDFS(void)
 {
     if (root == nullptr)
         return;
@@ -101,5 +102,18 @@ void GRAPH<T_GRAPH>::TraverseDFS()
     unordered_set<node<T_GRAPH> *> visited;
     TraverseDFS_AUX(root, visited);
 }
+
+template <typename T_GRAPH>
+void GRAPH<T_GRAPH>::createGraphFromList(vector<pair<T_GRAPH, int>> verticesList,
+    vector<pair<int, int>> edgesList){
+    for (const auto &vertex : verticesList)
+    {
+        addVertex(vertex.first, vertex.second);
+    }
+    for (const auto &edge : edgesList)
+    {
+        addEdge(edge.first, edge.second);
+    }
+    }
 
 #endif // GRAPH_H
